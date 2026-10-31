@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#ecdfc6">
+<title>Pagoda AR</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9B%A9%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/anatomy/iso.css">
+<link rel="stylesheet" href="css/anatomy-sepia.css">
+<link rel="stylesheet" href="css/app.css">
+<!-- mind-ar@1.2.5 imports sRGBEncoding, removed in three r162: keep three pinned at 0.160.0. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+    "mindar-image-three": "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"
+  }
+}
+</script>
+</head>
+<body class="iso ar" data-theme="sepia">
+
+<!-- camera + 3D (MindAR tracking, or the no-card demo) -->
+<div id="ar"></div>
+
+<!-- ============ VIEWFINDER: the page opens straight into it ============ -->
+<div id="guide" class="overlay on">
+  <div class="scan-top plate"><b>Point your camera at the pagoda picture</b><span class="cap">A 3D pagoda will stand on it</span></div>
+  <div class="frame"><i></i><i></i><i></i><i></i><div class="sweep"></div></div>
+  <div class="scan-bottom">
+    <div class="status" id="scanStatus">Starting camera…</div>
+    <div class="row">
+      <button class="btn ghost small" id="scanRetry" hidden>Try again</button>
+      <a class="btn ghost small" href="target.png" target="_blank" rel="noopener">Get the picture</a>
+      <button class="btn ghost small" id="scanSkip">No picture? Demo</button>
+    </div>
+  </div>
+</div>
+
+<div id="found" class="overlay"><div class="plate badge"><div class="stamp">塔</div><b>Found it!</b><span>Tap the pagoda to take it apart</span></div></div>
+
+<!-- ============ HUD ============ -->
+<div id="hud" class="overlay">
+  <div class="hud-top">
+    <div class="plate namecard" id="namecard">
+      <span class="corner tl" id="ncFig">Fig. 01</span><span class="corner tr" id="ncGroup">五重塔</span>
+      <div class="nc-main"><b id="ncName"></b><span class="jp" id="ncJp"></span></div>
+      <div class="nc-blurb" id="ncBlurb"></div>
+      <span class="corner bl" id="ncState">assembled</span><span class="corner br" id="ncCount">19 parts</span>
+    </div>
+    <div class="iconcol">
+      <button class="iconbtn" id="factBtn" aria-label="Did you know?"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 10.5v6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="12" cy="7.2" r="1.5" fill="currentColor"/></svg></button>
+    </div>
+  </div>
+
+  <div class="lost" id="lost"><div class="frame small"><i></i><i></i><i></i><i></i></div><div class="plate">Point back at the picture</div></div>
+
+  <div class="hud-bottom">
+    <div class="hint" id="hint" role="status" aria-live="polite"></div>
+    <div class="controls plate">
+      <button class="iconbtn flat" id="prevBtn" aria-label="Previous part" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="btn red small" id="explodeBtn">Take it apart</button>
+      <button class="btn ghost small" id="quakeBtn">Earthquake!</button>
+      <button class="iconbtn flat" id="nextBtn" aria-label="Next part" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<div class="plate toast" id="toast"></div>
+<div class="plate errbox" id="err" hidden><b>Something went wrong</b><pre id="errText"></pre><button class="btn small" id="errBtn">Start over</button></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

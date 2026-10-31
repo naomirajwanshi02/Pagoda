@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pagoda target maker</title>
+<style>
+  body{margin:0;padding:16px;background:#ecdfc6;color:#3b2a1c;font:14px/1.5 ui-monospace,Consolas,monospace}
+  img{max-width:420px;width:100%;box-shadow:0 0 0 1px #8c7457;display:block;margin:10px 0}
+  button{font:inherit;padding:8px 14px;margin-right:6px}
+  #log{white-space:pre-wrap}
+</style></head>
+<body>
+<p>Makes <b>target.png</b> (the picture you scan) and compiles it into <b>targets.mind</b> with MindAR's own compiler.
+Run it from <code>tools/serve.ps1</code>, which accepts the files back.</p>
+<p><code>?build=1</code> draws the placeholder illustration and compiles it.<br>
+<code>?src=../assets/illustration.png&amp;build=1</code> uses your own illustration instead (copied to target.png, longest side 1400 px).</p>
+<button id="draw">1 · Make target.png</button><button id="compile">2 · Compile .mind</button>
+<div id="log"></div>
+<div id="out"></div>
+<script type="module">
+const params = new URLSearchParams(location.search);
+const log = (t) => { document.getElementById('log').textContent += t + '\n'; };
+const out = document.getElementById('out');
+function rng(seed){ let s = seed >>> 0 || 1; return () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return (s >>> 0) / 4294967296; }; }
+const load = (src) => new Promise((ok, fail) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => fail(new Error('could not load ' + src)); i.src = src; });
+
+// A placeholder ink illustration of a five-storey pagoda, until the real one arrives.
+// Dense, non-repeating detail (fibres, speckle, tiles, brackets, pine) is what the tracker locks onto.
+function drawPlaceholder(){
+  const W = 1000, H = 1400;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  const r = rng(1644);
+  g.fillStyle = '#f1e5cc'; g.fillRect(0, 0, W, H);
+  for (let i = 0; i < 2400; i++){
+    const x = r() * W, y = r() * H, a = r() * 6.28, l = 3 + r() * 14;
+    g.strokeStyle = `rgba(140,116,87,${0.1 + r() * 0.22})`; g.lineWidth = 0.6 + r();
+    g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke();
+  }
+  for (let i = 0; i < 700; i++){ g.fillStyle = `rgba(59,42,28,${0.15 + r() * 0.45})`; g.beginPath(); g.arc(r() * W, r() * H, 0.6 + r() * 1.6, 0, 6.28); g.fill(); }
+  // plate frame and rulers
+  g.strokeStyle = '#3b2a1c'; g.lineWidth = 4; g.strokeRect(22, 22, W - 44, H - 44);
+  g.strokeStyle = '#8c7457'; g.lineWidth = 1.5; g.strokeRect(34, 34, W - 68, H - 68);
+  g.fillStyle = '#5b4630'; g.font = '13px Consolas,monospace';
+  for (let x = 40, n = 0; x < W - 40; x += 12, n++){
+    const major = n % 5 === 0; g.strokeStyle = '#3b2a1c'; g.lineWidth = major ? 2 : 1;
+    g.beginPath(); g.moveTo(x, 34); g.lineTo(x, 34 + (major ? 16 : 8)); g.stroke();
+  }
+  for (let y = 40, n = 0; y < H - 40; y += 12, n++){
+    const major = n % 5 === 0; g.lineWidth = major ? 2 : 1;
+    g.beginPath(); g.moveTo(34, y); g.lineTo(34 + (major ? 16 : 8), y); g.stroke();
+  }
+  // sky: a big vermilion sun and cloud bands
+  g.fillStyle = '#d4451f'; g.beginPath(); g.arc(760, 300, 120, 0, 6.28); g.fill();
+  g.strokeStyle = '#3b2a1c'; g.lineWidth = 3;
+  for (const [y, x0, x1] of [[260, 90, 420], [300, 140, 520], [470, 600, 930], [510, 560, 880]]){
+    g.beginPath(); g.moveTo(x0, y); for (let x = x0; x <= x1; x += 40) g.quadraticCurveTo(x + 20, y - 18, x + 40, y); g.stroke();
+  }
+  // the pagoda, in ink with a vermilion wash
+  const cx = 500, base = 1180;
+  const E = [330, 297, 264, 231, 198], Bw = [150, 130, 113, 96, 79], Hs = [120, 92, 86, 80, 74];
+  let y = base;
+  g.fillStyle = '#bdb5a6'; g.fillRect(cx - 290, y, 580, 50); g.strokeRect(cx - 290, y, 580, 50);
+  for (let k = 0; k < 4; k++) g.strokeRect(cx - 70, y + 50 - k * 12, 140, 12);
+  for (let i = 0; i < 5; i++){
+    const b = Bw[i], h = Hs[i];
+    // body
+    g.fillStyle = '#f1ebde'; g.fillRect(cx - b, y - h, 2 * b, h); g.strokeRect(cx - b, y - h, 2 * b, h);
+    g.fillStyle = '#d4451f';
+    for (const x of [-b, -b / 3, b / 3, b]) { g.fillRect(cx + x - 7, y - h, 14, h); g.strokeRect(cx + x - 7, y - h, 14, h); }
+    g.fillRect(cx - b / 3 + 10, y - h * 0.8, (2 * b) / 3 - 20, h * 0.8); g.strokeRect(cx - b / 3 + 10, y - h * 0.8, (2 * b) / 3 - 20, h * 0.8);
+    // brackets
+    const bk = y - h;
+    for (let L = 0; L < 3; L++){ g.fillStyle = L % 2 ? '#f1ebde' : '#d4451f'; const w = b + L * 14; g.fillRect(cx - w, bk - (L + 1) * 12, 2 * w, 12); g.strokeRect(cx - w, bk - (L + 1) * 12, 2 * w, 12); }
+    for (let x = -b; x <= b; x += b / 3){ g.fillStyle = '#e7b02e'; g.fillRect(cx + x - 4, bk - 34, 8, 8); }
+    // roof with up-curled corners
+    const e = E[i], ry = bk - 36, rise = i === 4 ? 120 : 52, tw = i === 4 ? 16 : Bw[Math.min(4, i + 1)] + 20;
+    g.fillStyle = '#5b5854';
+    g.beginPath(); g.moveTo(cx - e - 18, ry - 26); g.quadraticCurveTo(cx - e * 0.6, ry + 6, cx, ry + 4); g.quadraticCurveTo(cx + e * 0.6, ry + 6, cx + e + 18, ry - 26);
+    g.quadraticCurveTo(cx + tw + 40, ry - rise * 0.3, cx + tw, ry - rise); g.lineTo(cx - tw, ry - rise); g.quadraticCurveTo(cx - tw - 40, ry - rise * 0.3, cx - e - 18, ry - 26);
+    g.fill(); g.stroke();
+    g.strokeStyle = 'rgba(241,235,222,.45)'; g.lineWidth = 2;
+    for (let x = -e + 20; x < e - 10; x += 16){ g.beginPath(); g.moveTo(cx + x, ry + 2 - Math.abs(x / e) ** 4 * 22); g.lineTo(cx + x * (tw / e) * 1.1, ry - rise + 4); g.stroke(); }
+    g.strokeStyle = '#3b2a1c'; g.lineWidth = 3;
+    // wind bells
+    for (const s of [-1, 1]){ g.beginPath(); g.moveTo(cx + s * (e + 12), ry - 22); g.lineTo(cx + s * (e + 12), ry - 2); g.stroke(); g.fillStyle = '#5f5b4c'; g.fillRect(cx + s * (e + 12) - 6, ry - 2, 12, 14); }
+    y = ry - rise;
+  }
+  // sōrin
+  g.fillStyle = '#5f5b4c'; g.fillRect(cx - 22, y - 20, 44, 20); g.strokeRect(cx - 22, y - 20, 44, 20);
+  g.beginPath(); g.arc(cx, y - 20, 18, Math.PI, 0); g.fill(); g.stroke();
+  g.fillRect(cx - 4, y - 230, 8, 200);
+  for (let k = 0; k < 9; k++){ g.beginPath(); g.ellipse(cx, y - 50 - k * 16, 22 - k * 0.6, 5, 0, 0, 6.28); g.fill(); g.stroke(); }
+  g.beginPath(); g.moveTo(cx, y - 250); g.quadraticCurveTo(cx + 34, y - 220, cx + 12, y - 196); g.quadraticCurveTo(cx, y - 210, cx - 12, y - 196); g.quadraticCurveTo(cx - 34, y - 220, cx, y - 250); g.fill(); g.stroke();
+  g.fillStyle = '#cfa33c'; g.beginPath(); g.arc(cx, y - 262, 11, 0, 6.28); g.fill(); g.stroke();
+  // pines either side
+  for (const [px, s] of [[130, 1], [870, -1], [210, 1.2], [800, -1.1]]){
+    for (let k = 0; k < 5; k++){
+      const py = base - 40 - k * 46, w = 110 - k * 16;
+      g.fillStyle = k % 2 ? '#5f7d3a' : '#4a6a2e';
+      g.beginPath(); g.ellipse(px + s * k * 6, py, w * Math.abs(s) * 0.7, 22, 0, 0, 6.28); g.fill(); g.stroke();
+    }
+  }
+  // title block
+  g.fillStyle = '#2b1e13'; g.font = '700 62px Georgia,"Times New Roman",serif'; g.fillText('FIVE-STOREY', 70, 130);
+  g.fillStyle = '#b5452f'; g.font = 'italic 700 104px Georgia,"Times New Roman",serif'; g.fillText('Pagoda', 70, 230);
+  g.fillStyle = '#5b4630'; g.font = '20px Consolas,monospace'; g.fillText('FIG. 01 · SCAN ME · 五重塔 GOJŪ-NO-TŌ', 72, 1310);
+  g.save(); g.translate(880, 1280); g.rotate(-0.2);
+  g.strokeStyle = '#b5452f'; g.lineWidth = 7; g.beginPath(); g.arc(0, 0, 56, 0, 6.28); g.stroke();
+  g.fillStyle = '#b5452f'; g.font = '900 60px "Yu Gothic","Meiryo",sans-serif'; g.textAlign = 'center'; g.fillText('塔', 0, 21);
+  g.restore();
+  return c;
+}
+
+async function fromSource(src){
+  const img = await load(src + (src.includes('?') ? '&' : '?') + Date.now());
+  const k = Math.min(1, 1400 / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  return c;
+}
+
+async function draw(){
+  const src = params.get('src');
+  const c = src ? await fromSource(src) : drawPlaceholder();
+  log(`${src ? 'illustration ' + src : 'placeholder'}: ${c.width} × ${c.height}`);
+  const blob = await new Promise((ok) => c.toBlob(ok, 'image/png'));
+  out.innerHTML = '';
+  const shown = new Image(); shown.src = URL.createObjectURL(blob); out.appendChild(shown);
+  const res = await fetch('/__save?name=target.png', { method: 'POST', body: blob });
+  log(`target.png: ${res.ok ? 'saved' : 'save failed'} (${(blob.size / 1024).toFixed(0)} KB)`);
+}
+
+async function compile(){
+  log('loading MindAR compiler…');
+  await import('https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js');
+  const img = new Image();
+  img.src = '../target.png?' + Date.now();
+  await img.decode();
+  const compiler = new window.MINDAR.IMAGE.Compiler();
+  let last = -10;
+  const data = await compiler.compileImageTargets([img], (p) => { if (p - last >= 10){ last = p; log(`compiling ${p.toFixed(0)}%`); } });
+  const t = data[0];
+  log(`detection points: ${t.matchingData.reduce((n, l) => n + l.maximaPoints.length + l.minimaPoints.length, 0)} over ${t.matchingData.length} scales; tracking points: ${t.trackingData.reduce((n, l) => n + l.points.length, 0)}`);
+  const buf = await compiler.exportData();
+  const res = await fetch('/__save?name=targets.mind', { method: 'POST', body: new Blob([buf]) });
+  log(`targets.mind: ${res.ok ? 'saved' : 'save failed'}`);
+  window.__done = true;
+}
+
+document.getElementById('draw').onclick = draw;
+document.getElementById('compile').onclick = compile;
+if (params.has('build')) draw().then(compile).catch((e) => { log('ERROR ' + e); window.__done = 'error'; });
+</script>
+</body></html>
