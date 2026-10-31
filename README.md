@@ -5,8 +5,8 @@ pagoda (五重塔, gojū-no-tō) stands on the picture and stays on it while you
 round. **Tap it and it comes apart** into its 19 parts, storey by storey, so you can
 see how it is built. Tap any part to learn what it is. Made for ages 8–15.
 
-**Play locally:** `http://localhost:8124/`
-**Without the picture:** `?demo=1`
+**Play:** https://naomirajwanshi02.github.io/Pagoda/
+**Without the picture:** https://naomirajwanshi02.github.io/Pagoda/?demo=1
 **The picture to scan:** [`target.png`](target.png), the painted pagoda illustration (`assets/illustration.jpg`)
 
 ## How it works
