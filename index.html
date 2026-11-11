@@ -44,7 +44,7 @@
   </div>
 </div>
 
-<div id="found" class="overlay"><div class="plate badge"><div class="stamp">塔</div><b>Found it!</b><span>Tap the pagoda to take it apart</span></div></div>
+<div id="found" class="overlay"><div class="plate badge"><div class="stamp">塔</div><b>Found it!</b><span>Touch the pagoda to take it apart</span></div></div>
 
 <!-- ============ HUD ============ -->
 <div id="hud" class="overlay">
@@ -60,13 +60,13 @@
     </div>
   </div>
 
+  <div class="held" id="held"><span></span>Holding it in place · point at the picture to lock it back on</div>
   <div class="lost" id="lost"><div class="frame small"><i></i><i></i><i></i><i></i></div><div class="plate">Point back at the picture</div></div>
 
   <div class="hud-bottom">
     <div class="hint" id="hint" role="status" aria-live="polite"></div>
     <div class="controls plate">
       <button class="iconbtn flat" id="prevBtn" aria-label="Previous part" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button class="btn red small" id="explodeBtn">Take it apart</button>
       <button class="btn ghost small" id="quakeBtn">Earthquake!</button>
       <button class="iconbtn flat" id="nextBtn" aria-label="Next part" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>

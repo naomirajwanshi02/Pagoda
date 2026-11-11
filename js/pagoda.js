@@ -11,7 +11,7 @@
 
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { materials, inkMat } from './look.js';
+import { materials } from './look.js';
 import { PARTS } from './data.js';
 
 const TAU = Math.PI * 2, Q = Math.PI / 2;
@@ -25,43 +25,33 @@ export const DIM = {
 };
 
 // ------------------------------------------------------------------ geometry bag
-// Collects geometry per material, then merges it into one mesh per material with
-// its ink hull. Sheets that can be seen from both sides skip the hull.
+// Collects geometry per material, then merges it into one shadow-casting mesh per
+// material, so a whole part is only a handful of draw calls.
 class Bag {
   constructor(){ this.lists = new Map(); }
-  add(key, geo, ink = true){
-    const k = key + (ink ? '' : '|flat');
-    if (!this.lists.has(k)) this.lists.set(k, []);
-    this.lists.get(k).push(geo.index ? geo.toNonIndexed() : geo);
+  add(key, geo){
+    if (!this.lists.has(key)) this.lists.set(key, []);
+    this.lists.get(key).push(geo.index ? geo.toNonIndexed() : geo);
     return geo;
   }
   build(id){
     const M = materials();
     const group = new THREE.Group();
     group.name = id;
-    const ink = inkMat();
-    const mats = [ink];
-    for (const [k, list] of this.lists){
-      const [key, flat] = k.split('|');
+    const mats = [];
+    for (const [key, list] of this.lists){
       for (const g of list){ for (const a of Object.keys(g.attributes)) if (!['position', 'normal', 'uv'].includes(a)) g.deleteAttribute(a); }
       const geo = mergeGeometries(list, false);
       list.forEach((g) => g.dispose());
-      // each part owns its materials (same shader program), so it can fade on its own
+      // each part owns its materials (sharing the textures), so it can fade on its own
       const m = M[key].clone();
-      m.uniforms.uRes = M[key].uniforms.uRes;
-      m.uniforms.uMap.value = M[key].uniforms.uMap.value;
+      m.userData.color0 = m.color.clone();
       mats.push(m);
       const mesh = new THREE.Mesh(geo, m);
       mesh.userData.part = id;
+      mesh.castShadow = mesh.receiveShadow = true;
       group.add(mesh);
-      if (!flat){
-        const hull = new THREE.Mesh(geo, ink);
-        hull.userData.hull = true;
-        hull.raycast = () => {};
-        group.add(hull);
-      }
     }
-    group.userData.ink = ink;
     group.userData.mats = mats;
     return group;
   }
@@ -351,6 +341,18 @@ function roof(i, yk, sc, Si){
     return mergeGeometries(p);
   });
 
+  // the round ends of the cover tiles (nokimarugawara) in a row along the eave
+  four(bag, 'ridge', () => {
+    const p = [];
+    for (let x = Math.ceil(-E / 0.42) * 0.42 + 0.105; x < E; x += 0.42){
+      const u = x / E;
+      if (Math.abs(u) > 0.96) continue;
+      const q = at(u, E, yt, 1, 1);
+      p.push(cyl(0.085, 0.085, 0.12, 0, 0, 0, 10).rotateX(Q).translate(q.x, q.y + 0.06, q.z + 0.02).toNonIndexed());
+    }
+    return mergeGeometries(p);
+  });
+
   // hip ridges (sumimune) with a demon tile (onigawara) at the foot, and a wind bell (fūtaku)
   four(bag, 'ridge', () => {
     const pts = [];
@@ -374,7 +376,7 @@ function roof(i, yk, sc, Si){
     // the floor of the next storey's frame, open round the pillar
     const s = new THREE.Shape([V(-Ti, -Ti), V(Ti, -Ti), V(Ti, Ti), V(-Ti, Ti)]);
     s.holes.push(new THREE.Path().absarc(0, 0, 0.55, 0, TAU, true));
-    bag.add('wood2', new THREE.ShapeGeometry(s, 12).rotateX(-Q).translate(0, top, 0), false);
+    bag.add('wood2', new THREE.ShapeGeometry(s, 12).rotateX(-Q).translate(0, top, 0));
   }
   return { group: bag.build(`roof${i}`), top };
 }
@@ -481,7 +483,7 @@ export function buildPagoda(){
     if (p.id === 'kidan') explode = V(0, 0, 0);
     else if (p.id === 'shinbashira') explode = V(DIM.E[0] + 2.4, 0, 0);
     else { lift += gapBefore(p.id); explode = V(0, lift, 0); }
-    g.traverse((o) => { if (o.isMesh && !o.userData.hull) o.userData.index = index; });
+    g.traverse((o) => { if (o.isMesh) o.userData.index = index; });
     return { ...p, index, node: g, explode, offset: new THREE.Vector3(), vel: new THREE.Vector3(), from: 0 };
   });
   return { root, parts, height: s.top, explodedHeight: s.top + lift, explodedWidth: DIM.E[0] + 2.4 + 0.4 + DIM.E[0] };

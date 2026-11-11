@@ -1,5 +1,6 @@
-// The flow: viewfinder → the picture is found → the pagoda stands on it and stays
-// tracked → tap to take it apart, tap a part to learn what it is, shake it.
+// The flow: viewfinder → the picture is found → the pagoda stands on it like a model
+// on the table (walk or turn the phone round it) → touch the pagoda to take it apart,
+// touch a part to learn what it is, touch empty space to put it back, shake it.
 
 import { Stage } from './stage.js';
 import { PAGODA, PARTS, FACTS } from './data.js';
@@ -42,7 +43,7 @@ function card(part){
     $('ncName').textContent = PAGODA.name;
     $('ncJp').textContent = PAGODA.jp;
     $('ncBlurb').textContent = stage?.exploded
-      ? `Taken apart into ${PARTS.length} parts, bottom to top. Tap any part, or step through them with the arrows.`
+      ? `Taken apart into ${PARTS.length} parts, bottom to top. Touch any part, or step through them with the arrows. Touch empty space to put it back together.`
       : PAGODA.blurb;
     $('ncCount').textContent = `${PARTS.length} parts`;
   }
@@ -52,22 +53,23 @@ function card(part){
 
 function syncControls(){
   const apart = stage.exploded;
-  $('explodeBtn').textContent = apart ? 'Put it back' : 'Take it apart';
   $('prevBtn').hidden = $('nextBtn').hidden = !apart;
   hint();
 }
 function hint(){
-  const h = !stage.tracking ? ''
+  const h = !stage.shown ? ''
     : stage.quaking ? 'Each storey sways <b>the opposite way</b> to its neighbours: the "snake dance"'
-      : !stage.exploded ? '<b>Tap the pagoda</b> to take it apart'
-        : stage.selected ? 'Tap another part, or <b>Put it back</b>' : '<b>Tap a part</b> to see what it does';
+      : !stage.exploded ? '<b>Touch the pagoda</b> to take it apart · walk round it to see every side'
+        : stage.selected ? 'Touch another part · touch empty space to let go' : '<b>Touch a part</b> to see what it is · empty space puts it back';
   $('hint').innerHTML = h;
   $('hint').hidden = !h;
 }
 
-function onTrack(found){
-  on($('lost'), !found && seen);
-  if (found && !seen){
+// tracking: the picture is in view; shown: the pagoda is on screen (tracked, or held by the gyroscope)
+function onTrack(tracking, shown = tracking){
+  on($('lost'), seen && !shown);
+  on($('held'), seen && shown && !tracking);
+  if (shown && !seen){
     seen = true;
     on($('guide'), false);
     if (!stage.orbit){
@@ -86,7 +88,7 @@ async function start(demo){
   stage = new Stage($('ar'), {
     onTrack,
     onPick: (p) => { card(p); syncControls(); },
-    onTapEmpty: () => { if (stage.selected) stage.select(null); },
+    onState: () => { card(stage.selected); syncControls(); },
   });
   window.__stage = stage;
   if (demo){
@@ -106,7 +108,6 @@ async function start(demo){
 
 $('scanSkip').onclick = () => start(true);
 $('scanRetry').onclick = () => start(false);
-$('explodeBtn').onclick = () => { stage.setExploded(!stage.exploded); syncControls(); };
 $('quakeBtn').onclick = () => {
   stage.quake();
   hint();

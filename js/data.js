@@ -4,7 +4,7 @@
 export const PAGODA = {
   name: 'Five-storey pagoda',
   jp: '五重塔 · gojū-no-tō',
-  blurb: 'A Buddhist tower built from wood, with no nails holding the storeys together. Tap it to take it apart.',
+  blurb: 'A Buddhist tower built from wood, with no nails holding the storeys together. Touch it to take it apart.',
 };
 
 const ORD = ['First', 'Second', 'Third', 'Fourth', 'Fifth'];

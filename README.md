@@ -1,9 +1,9 @@
 # ⛩ Pagoda — a scan-to-explore WebAR five-storey pagoda
 
-Point your phone at the printed **pagoda illustration**. A 3D Japanese five-storey
-pagoda (五重塔, gojū-no-tō) stands on the picture and stays on it while you walk
-round. **Tap it and it comes apart** into its 19 parts, storey by storey, so you can
-see how it is built. Tap any part to learn what it is. Made for ages 8–15.
+Point your phone at the printed **pagoda illustration**. A realistic 3D Japanese five-storey
+pagoda (五重塔, gojū-no-tō) appears standing on it, like a model on the table. Walk or turn the
+phone round it to see every side. **Touch the pagoda and it comes apart** into its 19 parts,
+storey by storey, so you can see how it is built. Touch any part to learn what it is. Made for ages 8–15.
 
 **Play:** https://naomirajwanshi02.github.io/Pagoda/
 **Without the picture:** https://naomirajwanshi02.github.io/Pagoda/?demo=1
@@ -12,16 +12,18 @@ see how it is built. Tap any part to learn what it is. Made for ages 8–15.
 ## How it works
 
 1. The page opens straight into the camera viewfinder. MindAR *image tracking* looks for the illustration.
-2. When it's found, the pagoda stands on it. It is **anchored to the picture** the whole time: tilt the
-   picture or walk round it and the pagoda moves with it. Lose the picture and a cue asks you to point back at it.
-3. **Tap the pagoda** (anywhere on screen) and it comes apart from the top down: each roof lifts off its body,
-   each body lifts off the roof below, the bronze spire splits into its seven pieces and the central pillar
-   slides out to the side. The whole thing shrinks a little so it still fits on screen.
-4. **Tap a part** to pick it: it keeps its colour, everything else fades to paper, and the name card says what it
-   is (English, kanji and romaji) and what it does. The ‹ › arrows step through all 19 parts.
-5. **Earthquake!** shakes the ground. Each storey sways the opposite way to its neighbours (the "snake dance")
+2. When it's found, the pagoda is **anchored on it** like a real model on the table: nothing of the picture is
+   drawn, only the pagoda and its shadow. Walk round it, tilt or turn the phone, and you see it from every side.
+   A one-finger drag also turns it on its base.
+3. If the picture slips out of view, the phone's **gyroscope holds the pagoda where it was in the room** (a small
+   cue says so). Point back at the picture and it eases back onto it. On iPhone, the first touch asks for motion access.
+4. **Touch the pagoda** and it comes apart from the top down: each roof lifts off its body, each body lifts off the
+   roof below, the bronze spire splits into its seven pieces and the central pillar slides out to the side.
+5. **Touch a part** to pick it: it keeps its colour and glows softly, everything else fades, and the name card says
+   what it is (English, kanji and romaji) and what it does. The ‹ › arrows step through all 19 parts.
+6. **Touch empty space** to let go of a part; touch empty space again to put the pagoda back together.
+7. **Earthquake!** shakes the ground. Each storey sways the opposite way to its neighbours (the "snake dance")
    while the free-hanging pillar sways slowly. It works assembled or apart.
-6. **Put it back** closes it from the bottom up.
 
 ## The model
 
@@ -33,7 +35,7 @@ colours from the reference photos in `assets/refs/` (Kiyomizu-dera). Every fact 
 |---|---|---|---|
 | 01 | Stone platform | 基壇 kidan | stone podium with coping, plinth, steps on all four sides, the foundation stone (shinso) that holds the relics, under the pillar |
 | 02–10 | Five storeys | 初重…五重 | sill, 12 pillars on a 3 × 3-bay plan, plaster walls, studded double doors, green renji-mado windows (ground floor), three nageshi tie-beams; **mitesaki** three-step brackets: daito blocks, stepped tōmono beams with plaster boards, hijiki arms each carrying three makito bearing blocks, slanting **odaruki** tail rafters through the second step, the round **gangyō** purlin on the top step, diagonal corner sets, yellow-painted ends; balcony and kōran railing with giboshi caps (upper storeys). Ground floor inside: altar, four inner pillars, four Buddhas facing the four directions. Upper storeys inside: just crossing beams |
-| 03–11 | Five roofs | 屋根 yane | parallel double rafters (jidaruki + flying hiendaruki) with yellow ends, the great hip rafter (sumigi), plastered soffit, vermilion fascia, concave tiled sweep with up-curled corners (hongawara texture), hip ridges (sumimune) with demon tiles, a bronze wind bell at each corner (20 bells) |
+| 03–11 | Five roofs | 屋根 yane | parallel double rafters (jidaruki + flying hiendaruki) with yellow ends, the great hip rafter (sumigi), plastered soffit, vermilion fascia, concave tiled sweep with up-curled corners (hongawara tiles with relief), round tile ends along the eave, hip ridges (sumimune) with demon tiles, a bronze wind bell at each corner (20 bells) |
 | 12 | Central pillar | 心柱 shinbashira | an eight-sided cypress trunk with iron splice bands, standing free up the middle on the foundation stone |
 | 13–19 | The spire | 相輪 sōrin | dew basin, upturned bowl, eight-petal lotus, nine rings on the mast, four openwork water-flame fins, dragon wheel, sacred jewel |
 
@@ -62,21 +64,21 @@ storey, the exact form of its podium), and the clay figure groups inside its fir
 The model is a general five-storey pagoda in Hōryū-ji's proportions, with four Buddhas on the altar as in many
 later pagodas.
 
-## The Anatomy look
+## The look: a realistic scale model
 
-Drawn with the [Anatomy](https://github.com/wheresryan22/anatomy) skill's rules (MIT), the same way as Ramen_Builder
-and Noh_Masks, in the shared sepia theme:
+The same recipe as sushi-ar and Noh_Masks ([`js/look.js`](js/look.js)):
 
-- **Four-tone flat shading** with the light fixed in view space: a part's lit top is its exact colour and the sides
-  step down toward walnut ([`js/look.js`](js/look.js)). Colours are raw sRGB.
-- **Ink outlines** on every solid, as an inverted hull pushed out a fixed number of *screen pixels*. MindAR measures
-  the anchor in target-image pixels, so a world-space outline would change weight with distance.
-- **A soft halo** under the platform so the pagoda sits on the paper.
-- **Calm, sprung motion**: every part rides its own spring to its exploded offset, staggered top-down, sub-stepped
-  so slow phones still move in real time.
-- **Plates**: the name card is an Anatomy plate with `Fig. nn` top-left, the group top-right, the state bottom-left
-  and a live `nn / 19` readout bottom-right.
-- The skill itself is installed for this workspace at `../.claude/skills/anatomy`. The kit is in [`vendor/anatomy/`](vendor/anatomy).
+- **Physically based materials painted in code**, nothing downloaded: brushed vermilion lacquer, mottled lime
+  plaster, cypress grain, fired-clay roof tiles with real relief (round cover tiles, laps and per-tile colour),
+  granite blocks, bronze with verdigris, gilt.
+- **A studio environment** for the lacquer, tiles and bronze to reflect, and **filmic tone mapping**.
+- **A warm key light with soft shadows** that fall on the real table or paper, a fill and a rim. The lights live in
+  the pagoda's own space, so as you walk round it the sun stays put, like light in a real room.
+- **Room light matching**: twice a second the camera image is sampled, and the exposure and fill ease toward its
+  brightness and tint.
+- **Calm motion**: every part rides a critically damped spring (no bounce) to its exploded offset, staggered top-down.
+- The UI keeps the Anatomy sepia plates of the other repos (`Fig. nn` labels, live `nn / 19` readout). The skill is
+  installed for this workspace at `../.claude/skills/anatomy`; the kit's CSS is in [`vendor/anatomy/`](vendor/anatomy).
 
 ## The tracking picture
 
@@ -95,11 +97,11 @@ whole painting in view, in even light.
 
 | File | What it is |
 |---|---|
-| `index.html` | Viewfinder, found badge, HUD (name card, hint, controls), toast, errors. |
-| `js/app.js` | The flow: scan → found → tap to take apart → pick parts → quake. |
-| `js/stage.js` | MindAR tracking (or the `?demo=1` orbit view), taps and picking, the springs, the fit, the quake. |
+| `index.html` | Viewfinder, found badge, HUD (name card, hint, part arrows, earthquake, held cue), toast, errors. |
+| `js/app.js` | The flow: scan → found → touch to take apart → pick parts → touch empty space to rebuild → quake. |
+| `js/stage.js` | MindAR anchoring with the gyroscope hold (or the `?demo=1` orbit view), touch picking and drag-to-turn, the springs, the fit, the quake. |
 | `js/pagoda.js` | The model: platform, storey bodies, roofs, pillar, spire, and each part's exploded offset. |
-| `js/look.js` | The Anatomy shader, ink, pigments, tile and stone textures, halo. |
+| `js/look.js` | Renderer, environment, lights and shadows, room-light matching, painted PBR textures and materials. |
 | `js/data.js` | The 19 parts' names, kanji, romaji and blurbs, and the facts. |
 | `tools/make-target.html` | Makes `target.png` (placeholder or your illustration) and compiles `targets.mind`. |
 | `tools/serve.ps1` | Local dev server on port 8124, no Node or Python needed. |
@@ -112,7 +114,7 @@ powershell -ExecutionPolicy Bypass -File tools/serve.ps1
 ```
 
 Then open http://localhost:8124/?demo=1. A phone needs HTTPS for the camera (for example GitHub Pages, like the
-other repos). `?target=./other.mind&card=./other.png` swaps the target; `?beta=` and `?mincf=` tune MindAR's
+other repos). `?target=./other.mind` swaps the target; `?beta=` and `?mincf=` tune MindAR's
 smoothing filter.
 
 Version pins: `mind-ar@1.2.5` needs `three@0.160.0`, because three r162 removed `sRGBEncoding`. These are the
