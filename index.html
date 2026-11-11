@@ -44,19 +44,14 @@
   </div>
 </div>
 
-<div id="found" class="overlay"><div class="plate badge"><div class="stamp">塔</div><b>Found it!</b><span>Touch the pagoda to take it apart</span></div></div>
+<div id="found" class="overlay"><div class="plate badge"><div class="stamp"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><b>Found it!</b><span>Touch the pagoda to take it apart</span></div></div>
 
 <!-- ============ HUD ============ -->
 <div id="hud" class="overlay">
   <div class="hud-top">
     <div class="plate namecard" id="namecard">
-      <span class="corner tl" id="ncFig">Fig. 01</span><span class="corner tr" id="ncGroup">五重塔</span>
-      <div class="nc-main"><b id="ncName"></b><span class="jp" id="ncJp"></span></div>
+      <div class="nc-main"><b id="ncName"></b></div>
       <div class="nc-blurb" id="ncBlurb"></div>
-      <span class="corner bl" id="ncState">assembled</span><span class="corner br" id="ncCount">19 parts</span>
-    </div>
-    <div class="iconcol">
-      <button class="iconbtn" id="factBtn" aria-label="Did you know?"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 10.5v6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="12" cy="7.2" r="1.5" fill="currentColor"/></svg></button>
     </div>
   </div>
 
@@ -73,7 +68,6 @@
   </div>
 </div>
 
-<div class="plate toast" id="toast"></div>
 <div class="plate errbox" id="err" hidden><b>Something went wrong</b><pre id="errText"></pre><button class="btn small" id="errBtn">Start over</button></div>
 
 <script type="module" src="js/app.js"></script>

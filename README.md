@@ -6,7 +6,7 @@ phone round it to see every side. **Touch the pagoda and it comes apart** into i
 storey by storey, so you can see how it is built. Touch any part to learn what it is. Made for ages 8–15.
 
 **Play:** https://naomirajwanshi02.github.io/Pagoda/
-**Without the picture:** https://naomirajwanshi02.github.io/Pagoda/?demo=1
+**Without the picture:** https://naomirajwanshi02.github.io/Pagoda/?demo=1 (the pagoda over the live camera, drag to turn it)
 **The picture to scan:** [`target.png`](target.png), the painted pagoda illustration (`assets/illustration.jpg`)
 
 ## How it works
@@ -19,11 +19,12 @@ storey by storey, so you can see how it is built. Touch any part to learn what i
    cue says so). Point back at the picture and it eases back onto it. On iPhone, the first touch asks for motion access.
 4. **Touch the pagoda** and it comes apart from the top down: each roof lifts off its body, each body lifts off the
    roof below, the bronze spire splits into its seven pieces and the central pillar slides out to the side.
-5. **Touch a part** to pick it: it keeps its colour and glows softly, everything else fades, and the name card says
-   what it is (English, kanji and romaji) and what it does. The ‹ › arrows step through all 19 parts.
+5. **Touch a part** to pick it: it keeps its colour and glows softly, everything else fades, and the card at the top says
+   what it is and what it does. The ‹ › arrows step through all 19 parts.
 6. **Touch empty space** to let go of a part; touch empty space again to put the pagoda back together.
 7. **Earthquake!** shakes the ground. Each storey sways the opposite way to its neighbours (the "snake dance")
-   while the free-hanging pillar sways slowly. It works assembled or apart.
+   while the free-hanging pillar sways slowly. The explanation shows in the top card while it shakes, so no text
+   ever covers the pagoda. It works assembled or apart.
 
 ## The model
 
@@ -77,7 +78,7 @@ The same recipe as sushi-ar and Noh_Masks ([`js/look.js`](js/look.js)):
 - **Room light matching**: twice a second the camera image is sampled, and the exposure and fill ease toward its
   brightness and tint.
 - **Calm motion**: every part rides a critically damped spring (no bounce) to its exploded offset, staggered top-down.
-- The UI keeps the Anatomy sepia plates of the other repos (`Fig. nn` labels, live `nn / 19` readout). The skill is
+- The UI keeps the Anatomy sepia style of the other repos, pared down to one card at the top and the controls at the bottom. The skill is
   installed for this workspace at `../.claude/skills/anatomy`; the kit's CSS is in [`vendor/anatomy/`](vendor/anatomy).
 
 ## The tracking picture
@@ -97,12 +98,12 @@ whole painting in view, in even light.
 
 | File | What it is |
 |---|---|
-| `index.html` | Viewfinder, found badge, HUD (name card, hint, part arrows, earthquake, held cue), toast, errors. |
+| `index.html` | Viewfinder, found badge, HUD (one info card, hint, part arrows, earthquake, held cue), errors. |
 | `js/app.js` | The flow: scan → found → touch to take apart → pick parts → touch empty space to rebuild → quake. |
 | `js/stage.js` | MindAR anchoring with the gyroscope hold (or the `?demo=1` orbit view), touch picking and drag-to-turn, the springs, the fit, the quake. |
 | `js/pagoda.js` | The model: platform, storey bodies, roofs, pillar, spire, and each part's exploded offset. |
 | `js/look.js` | Renderer, environment, lights and shadows, room-light matching, painted PBR textures and materials. |
-| `js/data.js` | The 19 parts' names, kanji, romaji and blurbs, and the facts. |
+| `js/data.js` | The 19 parts' names and blurbs in plain English, and the earthquake card. |
 | `tools/make-target.html` | Makes `target.png` (placeholder or your illustration) and compiles `targets.mind`. |
 | `tools/serve.ps1` | Local dev server on port 8124, no Node or Python needed. |
 | `assets/refs/` | The reference photos. |

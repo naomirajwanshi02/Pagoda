@@ -151,8 +151,18 @@ export class Stage {
 
   // ---------------------------------------------------------------- no picture: the model on a plain ground
   async startDemo(){
-    this.container.classList.add('demo');
+    // the live back camera is the background, as in AR; a plain backdrop only if it is refused
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+      const v = document.createElement('video');
+      Object.assign(v, { srcObject: stream, muted: true, playsInline: true, autoplay: true, className: 'feed' });
+      v.setAttribute('playsinline', '');
+      this.container.appendChild(v);
+      await v.play().catch(() => {});
+      this.video = v;
+    } catch { this.container.classList.add('demo'); }
     const r = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: params.has('shots') });
+    r.setClearColor(0x000000, 0);
     r.setPixelRatio(Math.min(devicePixelRatio, 2));
     r.domElement.className = 'stage';
     this.container.appendChild(r.domElement);
@@ -161,6 +171,7 @@ export class Stage {
     this.camera = new THREE.PerspectiveCamera(38, 1, 0.01, 50);
     this.orbit = { yaw: -0.55, pitch: 0.32, dist: 3.5, idle: 0 };
     this.setupLook();
+    if (this.video) this.room = roomLight(this.look, r);
     const ground = new THREE.Group();               // stands in for MindAR's card plane
     ground.rotation.x = -Math.PI / 2;
     ground.add(this.holder);
@@ -355,11 +366,10 @@ export class Stage {
 
   stop(){
     try { this.renderer?.setAnimationLoop(null); } catch { /* fine */ }
-    if (this.mindar){
-      try { this.mindar.stop(); } catch { /* fine */ }
-      this.container.querySelectorAll('video').forEach((v) => v.srcObject?.getTracks?.().forEach((t) => t.stop()));
-    }
+    if (this.mindar) try { this.mindar.stop(); } catch { /* fine */ }
+    this.container.querySelectorAll('video').forEach((v) => v.srcObject?.getTracks?.().forEach((t) => t.stop()));
     this.container.innerHTML = '';
+    this.container.classList.remove('demo');
   }
 }
 
