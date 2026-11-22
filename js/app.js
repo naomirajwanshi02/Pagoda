@@ -118,7 +118,7 @@ function card(){
   const [name, blurb] = stage.quaking ? [QUAKE.name, QUAKE.blurb]
     : part ? [part.name, part.blurb]
       : [PAGODA.name, stage.exploded
-        ? `Taken apart into ${PARTS.length} parts, bottom to top. Touch any part, or step through them with the arrows. Touch empty space to put it back together.`
+        ? `Taken apart into ${PARTS.length} parts, bottom to top. Touch any part to learn about it. Touch empty space to put it back together.`
         : PAGODA.blurb];
   if ($('ncName').textContent === name && $('ncBlurb').textContent === blurb) return;
   $('ncName').textContent = name;
@@ -130,7 +130,6 @@ function card(){
 
 function syncControls(){
   if (phase !== 'view') return;
-  $('prevBtn').hidden = $('nextBtn').hidden = !stage.exploded;
   card();
   hint();
 }
@@ -152,8 +151,6 @@ $('quakeBtn').onclick = () => {
   clearTimeout(quakeT);
   quakeT = setTimeout(syncControls, 5100);   // the card goes back to the part once the shaking stops
 };
-$('prevBtn').onclick = () => stage.step(-1);
-$('nextBtn').onclick = () => stage.step(1);
 
 if (params.has('demo')){ demo = true; openIntro(); }
 else openPerm();

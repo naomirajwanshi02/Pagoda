@@ -280,12 +280,6 @@ export class Stage {
     this.selected = part;
     this.cb.onPick(part);
   }
-  step(dir){
-    const n = this.parts.length;
-    const i = this.selected ? (this.selected.index + dir + n) % n : dir > 0 ? 0 : n - 1;
-    if (!this.exploded) this.setExploded(true);
-    this.select(this.parts[i]);
-  }
 
   quake(){ this.quakeT = 0; }
   get quaking(){ return this.quakeT >= 0; }
