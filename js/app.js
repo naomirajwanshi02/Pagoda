@@ -136,8 +136,8 @@ function syncControls(){
 }
 function hint(){
   const h = !stage.shown || stage.quaking ? ''
-    : !stage.exploded ? '<b>Touch the pagoda</b> to take it apart · walk round it to see every side'
-      : stage.selected ? 'Touch another part · touch empty space to let go' : '<b>Touch a part</b> to see what it is · empty space puts it back';
+    : !stage.exploded ? '<b>Touch the pagoda</b> to take it apart.<br>Walk round it to see every side.'
+      : stage.selected ? 'Touch another part.<br>Touch empty space to let go.' : '<b>Touch a part</b> to see what it is.<br>Touch empty space to put it back.';
   $('hint').innerHTML = h;
   $('hint').hidden = !h;
 }
