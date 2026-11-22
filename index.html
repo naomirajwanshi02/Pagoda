@@ -30,8 +30,22 @@
 <!-- camera + 3D (MindAR tracking, or the no-card demo) -->
 <div id="ar"></div>
 
-<!-- ============ VIEWFINDER: the page opens straight into it ============ -->
-<div id="guide" class="overlay on">
+<!-- ============ 0 · CAMERA PERMISSION (skipped if already allowed) ============ -->
+<section id="perm" class="screen dim">
+  <div class="col center">
+    <div class="plate welcome">
+      <div class="permicon" aria-hidden="true"><svg viewBox="0 0 48 48" width="56" height="56"><rect x="5" y="13" width="38" height="27" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M17 13l3-5h8l3 5" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="24" cy="26.5" r="7.5" fill="none" stroke="currentColor" stroke-width="3"/></svg></div>
+      <h1>Allow camera access</h1>
+      <p>This page needs your camera. Tap the button, then choose <b>Allow</b>.</p>
+      <p class="small">The video stays on this phone: nothing is recorded or sent anywhere.</p>
+      <button class="btn red" id="permBtn">Allow camera</button>
+      <div class="status dark" id="permStatus"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1 · VIEWFINDER: find the picture ============ -->
+<div id="guide" class="overlay">
   <div class="scan-top plate"><b>Point your camera at the pagoda picture</b><span class="cap">A 3D pagoda will stand on it</span></div>
   <div class="frame"><i></i><i></i><i></i><i></i><div class="sweep"></div></div>
   <div class="scan-bottom">
@@ -44,7 +58,27 @@
   </div>
 </div>
 
-<div id="found" class="overlay"><div class="plate badge"><div class="stamp"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><b>Found it!</b><span>Touch the pagoda to take it apart</span></div></div>
+<div id="found" class="overlay"><div class="plate badge"><div class="stamp"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><b>Found it!</b><span>Here comes the pagoda</span></div></div>
+
+<!-- ============ 2 · INSTRUCTIONS, before the pagoda appears ============ -->
+<section id="intro" class="screen dim">
+  <div class="col center">
+    <div class="plate welcome">
+      <img class="hero" src="assets/pagoda-hero.png" alt="The five-storey pagoda">
+      <h1>Take apart a pagoda!</h1>
+      <p>A <b>five-storey pagoda</b> will stand on the picture in 3D. It is a Buddhist tower made of wood, and its storeys are stacked with <b>no nails</b>. Take it apart to see how it is built.</p>
+      <ol class="steps">
+        <li><b>1</b><span><u>Touch</u> the pagoda to take it apart</span></li>
+        <li><b>2</b><span><u>Tap</u> any part to learn about it</span></li>
+        <li><b>3</b><span><u>Walk round</u> it, or drag to turn it</span></li>
+        <li><b>4</b><span><u>Tap empty space</u> to put it back</span></li>
+      </ol>
+      <p>Keep your <b>camera on</b> and the picture in view: the pagoda stands over the live view around you. Try the <b>Earthquake!</b> button to see why pagodas don't fall down.</p>
+      <button class="btn red" id="goBtn">OK, show the pagoda</button>
+      <div class="status dark" id="camStatus"></div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ HUD ============ -->
 <div id="hud" class="overlay">

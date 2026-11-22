@@ -56,6 +56,7 @@ export class Stage {
     this.quakeT = -1;
     this.tracking = false;   // the picture is in view
     this.shown = false;      // the pagoda is on screen (tracked, or held by the gyro)
+    this.ready = false;      // hidden until the instruction card is dismissed; tracking runs underneath
     this.k = 0;              // 0 assembled … 1 apart, for the fit
     this.kv = 0;
 
@@ -256,7 +257,7 @@ export class Stage {
   }
 
   tap(x, y){
-    if (!this.shown) return;
+    if (!this.shown || !this.ready) return;
     const part = this.pickAt(x, y);
     if (!this.exploded){ if (part) this.setExploded(true); return; }
     if (part) this.select(part === this.selected ? null : part);
@@ -295,6 +296,7 @@ export class Stage {
     const dt = Math.min(0.25, (now - this.last) / 1000);
     this.last = now;
     if (this.place) this.updatePlace(dt);
+    this.holder.visible = this.ready;
     this.room?.(this.video, now, dt);
 
     // critically damped springs (no bounce), sub-stepped so a slow phone still moves in real time

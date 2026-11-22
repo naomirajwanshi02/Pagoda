@@ -11,18 +11,21 @@ storey by storey, so you can see how it is built. Touch any part to learn what i
 
 ## How it works
 
-1. The page opens straight into the camera viewfinder. MindAR *image tracking* looks for the illustration.
-2. When it's found, the pagoda is **anchored on it** like a real model on the table: nothing of the picture is
+1. **Allow camera access** (skipped if it is already allowed), the same first screen as the other apps.
+2. The viewfinder opens and MindAR *image tracking* looks for the illustration. When it is found, a short
+   **instruction card** explains what to do (touch to take it apart, tap parts, walk round, tap empty space to put
+   it back). Tap **OK, show the pagoda**.
+3. The pagoda is **anchored on the picture** like a real model on the table: nothing of the picture is
    drawn, only the pagoda and its shadow. Walk round it, tilt or turn the phone, and you see it from every side.
    A one-finger drag also turns it on its base.
-3. If the picture slips out of view, the phone's **gyroscope holds the pagoda where it was in the room** (a small
+4. If the picture slips out of view, the phone's **gyroscope holds the pagoda where it was in the room** (a small
    cue says so). Point back at the picture and it eases back onto it. On iPhone, the first touch asks for motion access.
-4. **Touch the pagoda** and it comes apart from the top down: each roof lifts off its body, each body lifts off the
+5. **Touch the pagoda** and it comes apart from the top down: each roof lifts off its body, each body lifts off the
    roof below, the bronze spire splits into its seven pieces and the central pillar slides out to the side.
-5. **Touch a part** to pick it: it keeps its colour and glows softly, everything else fades, and the card at the top says
+6. **Touch a part** to pick it: it keeps its colour and glows softly, everything else fades, and the card at the top says
    what it is and what it does. The ‹ › arrows step through all 19 parts.
-6. **Touch empty space** to let go of a part; touch empty space again to put the pagoda back together.
-7. **Earthquake!** shakes the ground. Each storey sways the opposite way to its neighbours (the "snake dance")
+7. **Touch empty space** to let go of a part; touch empty space again to put the pagoda back together.
+8. **Earthquake!** shakes the ground. Each storey sways the opposite way to its neighbours (the "snake dance")
    while the free-hanging pillar sways slowly. The explanation shows in the top card while it shakes, so no text
    ever covers the pagoda. It works assembled or apart.
 
@@ -98,8 +101,8 @@ whole painting in view, in even light.
 
 | File | What it is |
 |---|---|
-| `index.html` | Viewfinder, found badge, HUD (one info card, hint, part arrows, earthquake, held cue), errors. |
-| `js/app.js` | The flow: scan → found → touch to take apart → pick parts → touch empty space to rebuild → quake. |
+| `index.html` | Camera permission, viewfinder, instruction card, found badge, HUD (one info card, hint, part arrows, earthquake, held cue), errors. |
+| `js/app.js` | The flow: allow camera → scan → found → instructions → touch to take apart → pick parts → touch empty space to rebuild → quake. |
 | `js/stage.js` | MindAR anchoring with the gyroscope hold (or the `?demo=1` orbit view), touch picking and drag-to-turn, the springs, the fit, the quake. |
 | `js/pagoda.js` | The model: platform, storey bodies, roofs, pillar, spire, and each part's exploded offset. |
 | `js/look.js` | Renderer, environment, lights and shadows, room-light matching, painted PBR textures and materials. |
@@ -107,6 +110,7 @@ whole painting in view, in even light.
 | `tools/make-target.html` | Makes `target.png` (placeholder or your illustration) and compiles `targets.mind`. |
 | `tools/serve.ps1` | Local dev server on port 8124, no Node or Python needed. |
 | `assets/refs/` | The reference photos. |
+| `assets/pagoda-hero.png` | The pagoda rendered from the 3D model, for the instruction card. |
 
 ## Run locally
 
