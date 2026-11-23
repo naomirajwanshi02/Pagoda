@@ -14,7 +14,8 @@ storey by storey, so you can see how it is built. Touch any part to learn what i
 1. **Allow camera access** (skipped if it is already allowed), the same first screen as the other apps.
 2. The viewfinder opens and MindAR *image tracking* looks for the illustration. When it is found, a short
    **instruction card** explains what to do (touch to take it apart, tap parts, walk round, tap empty space to put
-   it back). Tap **OK, show the pagoda**.
+   it back). Tap **OK, show the pagoda**. The cross in its corner goes back to the
+   [Scan to Explore](https://naomirajwanshi02.github.io/Scan_To_Explore/) scanner.
 3. The pagoda is **anchored on the picture** like a real model on the table: nothing of the picture is
    drawn, only the pagoda and its shadow. Walk round it, tilt or turn the phone, and you see it from every side.
    A one-finger drag also turns it on its base.
@@ -28,6 +29,9 @@ storey by storey, so you can see how it is built. Touch any part to learn what i
 8. **Earthquake!** shakes the ground. Each storey sways the opposite way to its neighbours (the "snake dance")
    while the free-hanging pillar sways slowly. The explanation shows in the top card while it shakes, so no text
    ever covers the pagoda. It works assembled or apart.
+9. **The panel and buttons**: the small cross on the information panel closes it and the **i** button brings it
+   back (touching a part or shaking reopens it too). The cross above the i button leaves for the
+   [Scan to Explore](https://naomirajwanshi02.github.io/Scan_To_Explore/) scanner, the hub this pagoda is linked from.
 
 ## The model
 

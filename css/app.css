@@ -146,3 +146,23 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 .held span{display:none}
 #held.on{display:block;width:92%;max-width:420px}
 .controls{background:none;box-shadow:none;padding:0}
+
+/* information panel: a small cross closes it; the column beside it holds the exit cross and the i button (as in Shinto_Shrine) */
+.hud-top{position:relative;justify-content:flex-end}
+.namecard{position:relative;pointer-events:auto;padding-right:42px}
+.namecard[hidden]{display:none}
+.namecard .x{position:absolute;top:8px;right:8px;z-index:2;width:28px;height:28px;border:0;border-radius:50%;background:var(--anatomy-shade-2);color:var(--anatomy-strong);display:grid;place-items:center;padding:0}
+.namecard .x:active{transform:scale(.92)}
+.iconcol{flex:none;display:flex;flex-direction:column;gap:8px;pointer-events:auto}
+.iconbtn{width:42px;height:42px;border:0;border-radius:50%;background:var(--glass);color:var(--anatomy-strong);display:grid;place-items:center;
+  box-shadow:var(--anatomy-lift),0 0 0 1px var(--anatomy-mid)}
+
+/* intro card: centred text that fills the card, with padding on the sides; four equal step tiles */
+.welcome{padding-left:24px;padding-right:24px}
+.welcome p{text-align:center;max-width:none;width:100%}
+.steps{grid-auto-rows:1fr}
+.steps li{height:100%;min-height:64px}
+/* the intro card's cross, top right, back to the Scan to Explore scanner */
+#intro .welcome{position:relative}
+#intro .x{position:absolute;top:10px;right:10px;z-index:2;width:34px;height:34px;border:0;border-radius:50%;background:var(--anatomy-shade-2);color:var(--anatomy-strong);display:grid;place-items:center;padding:0;cursor:pointer}
+#intro .x:active{transform:scale(.92)}

@@ -124,8 +124,20 @@ function card(){
   $('ncName').textContent = name;
   $('ncBlurb').textContent = blurb;
   $('ncBlurb').scrollTop = 0;
+  // picking a part or shaking brings a closed panel back, as in Shinto_Shrine
+  if (part || stage.quaking) setInfo(true);
+  else pop();
+}
+function pop(){
   const nc = $('namecard');
   nc.classList.remove('pop'); void nc.offsetWidth; nc.classList.add('pop');
+}
+
+// ------------------------------------------------------------ information panel: the small cross hides it, the i button shows / hides it
+function setInfo(show){
+  $('namecard').hidden = !show;
+  $('infoBtn').setAttribute('aria-expanded', String(show));
+  if (show) pop();
 }
 
 function syncControls(){
@@ -151,6 +163,14 @@ $('quakeBtn').onclick = () => {
   clearTimeout(quakeT);
   quakeT = setTimeout(syncControls, 5100);   // the card goes back to the part once the shaking stops
 };
+
+$('infoClose').onclick = () => setInfo(false);
+$('infoBtn').onclick = () => setInfo($('namecard').hidden);
+// the cross above the i button: leave the pagoda and go back to scanning in Scan to Explore, the hub this is linked from
+const HUB = 'https://naomirajwanshi02.github.io/Scan_To_Explore/';
+const toHub = () => { try { stage?.stop(); } catch { /* fine */ } location.href = HUB; };
+$('exitBtn').onclick = toHub;
+$('introExit').onclick = toHub;   // the intro card's cross does the same
 
 if (params.has('demo')){ demo = true; openIntro(); }
 else openPerm();

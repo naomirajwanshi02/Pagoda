@@ -64,6 +64,7 @@
 <section id="intro" class="screen dim">
   <div class="col center">
     <div class="plate welcome">
+      <button class="x" id="introExit" aria-label="Back to scanning"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
       <img class="hero" src="assets/pagoda-hero.png" alt="The five-storey pagoda">
       <h1>Take apart a pagoda!</h1>
       <p>A <b>five-storey pagoda</b> will stand on the picture in 3D. It is a Buddhist tower made of wood, and its storeys are stacked with <b>no nails</b>. Take it apart to see how it is built.</p>
@@ -84,8 +85,14 @@
 <div id="hud" class="overlay">
   <div class="hud-top">
     <div class="plate namecard" id="namecard">
+      <button class="x" id="infoClose" aria-label="Close the information"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
       <div class="nc-main"><b id="ncName"></b></div>
       <div class="nc-blurb" id="ncBlurb"></div>
+    </div>
+    <!-- as in Shinto_Shrine: the cross leaves for the Scan to Explore scanner, the i button shows the panel again -->
+    <div class="iconcol">
+      <button class="iconbtn" id="exitBtn" aria-label="Back to scanning"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+      <button class="iconbtn" id="infoBtn" aria-label="Show or hide the information" aria-expanded="true"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="6.2" r="1.9" fill="currentColor"/><path d="M12 10.5v8" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></button>
     </div>
   </div>
 
