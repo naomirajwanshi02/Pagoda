@@ -14,7 +14,7 @@ storey by storey, so you can see how it is built. Touch any part to learn what i
 1. **Allow camera access** (skipped if it is already allowed), the same first screen as the other apps.
 2. The viewfinder opens and MindAR *image tracking* looks for the illustration. When it is found, a short
    **instruction card** explains what to do (touch to take it apart, tap parts, walk round, tap empty space to put
-   it back). Tap **OK, show the pagoda**. The cross in its corner goes back to the
+   it back). Tap **Start**. The cross in its corner (and the one on the scanning screen) goes back to the
    [Scan to Explore](https://naomirajwanshi02.github.io/Scan_To_Explore/) scanner.
 3. The pagoda is **anchored on the picture** like a real model on the table: nothing of the picture is
    drawn, only the pagoda and its shadow. Walk round it, tilt or turn the phone, and you see it from every side.
@@ -23,7 +23,7 @@ storey by storey, so you can see how it is built. Touch any part to learn what i
    cue says so). Point back at the picture and it eases back onto it. On iPhone, the first touch asks for motion access.
 5. **Touch the pagoda** and it comes apart from the top down: each roof lifts off its body, each body lifts off the
    roof below, the bronze spire splits into its seven pieces and the central pillar slides out to the side.
-6. **Touch a part** to pick it: it keeps its colour and glows softly, everything else fades, and the card at the top says
+6. **Touch a part** to pick it: it keeps its colour and glows softly, everything else fades, and the panel at the top says
    what it is and what it does.
 7. **Touch empty space** to let go of a part; touch empty space again to put the pagoda back together.
 8. **Earthquake!** shakes the ground. Each storey sways the opposite way to its neighbours (the "snake dance")
@@ -32,6 +32,7 @@ storey by storey, so you can see how it is built. Touch any part to learn what i
 9. **The panel and buttons**: the small cross on the information panel closes it and the **i** button brings it
    back (touching a part or shaking reopens it too). The cross above the i button leaves for the
    [Scan to Explore](https://naomirajwanshi02.github.io/Scan_To_Explore/) scanner, the hub this pagoda is linked from.
+   A short cue under the panel says what to do next, as in Noh_Masks.
 
 ## The model
 

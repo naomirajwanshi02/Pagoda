@@ -171,6 +171,7 @@ const HUB = 'https://naomirajwanshi02.github.io/Scan_To_Explore/';
 const toHub = () => { try { stage?.stop(); } catch { /* fine */ } location.href = HUB; };
 $('exitBtn').onclick = toHub;
 $('introExit').onclick = toHub;   // the intro card's cross does the same
+$('guideClose').onclick = toHub;  // and so does the scanning screen's
 
 if (params.has('demo')){ demo = true; openIntro(); }
 else openPerm();

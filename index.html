@@ -46,6 +46,7 @@
 
 <!-- ============ 1 · VIEWFINDER: find the picture ============ -->
 <div id="guide" class="overlay">
+  <button class="iconbtn guideclose" id="guideClose" aria-label="Back to Scan to Explore"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
   <div class="scan-top plate"><b>Point your camera at the pagoda picture</b><span class="cap">A 3D pagoda will stand on it</span></div>
   <div class="frame"><i></i><i></i><i></i><i></i><div class="sweep"></div></div>
   <div class="scan-bottom">
@@ -64,7 +65,7 @@
 <section id="intro" class="screen dim">
   <div class="col center">
     <div class="plate welcome">
-      <button class="x" id="introExit" aria-label="Back to scanning"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+      <button class="x" id="introExit" aria-label="Back to Scan to Explore"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
       <img class="hero" src="assets/pagoda-hero.png" alt="The five-storey pagoda">
       <h1>Take apart a pagoda!</h1>
       <p>A <b>five-storey pagoda</b> will stand on the picture in 3D. It is a Buddhist tower made of wood, and its storeys are stacked with <b>no nails</b>. Take it apart to see how it is built.</p>
@@ -75,7 +76,7 @@
         <li><b>4</b><span><u>Tap empty space</u> to put it back</span></li>
       </ol>
       <p>Keep your <b>camera on</b> and the picture in view: the pagoda stands over the live view around you. Try the <b>Earthquake!</b> button to see why pagodas don't fall down.</p>
-      <button class="btn red" id="goBtn">OK, show the pagoda</button>
+      <button class="btn red" id="goBtn">Start</button>
       <div class="status dark" id="camStatus"></div>
     </div>
   </div>
@@ -84,10 +85,14 @@
 <!-- ============ HUD ============ -->
 <div id="hud" class="overlay">
   <div class="hud-top">
-    <div class="plate namecard" id="namecard">
-      <button class="x" id="infoClose" aria-label="Close the information"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
-      <div class="nc-main"><b id="ncName"></b></div>
-      <div class="nc-blurb" id="ncBlurb"></div>
+    <!-- as in Noh_Masks: the info panel, and the cue right under it -->
+    <div class="hud-left">
+      <div class="plate namecard" id="namecard">
+        <button class="x" id="infoClose" aria-label="Close the information"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></button>
+        <div class="nc-main"><b id="ncName"></b></div>
+        <div class="nc-blurb" id="ncBlurb"></div>
+      </div>
+      <div class="hint" id="hint" role="status" aria-live="polite"></div>
     </div>
     <!-- as in Shinto_Shrine: the cross leaves for the Scan to Explore scanner, the i button shows the panel again -->
     <div class="iconcol">
@@ -100,7 +105,6 @@
   <div class="lost" id="lost"><div class="frame small"><i></i><i></i><i></i><i></i></div><div class="plate">Point back at the picture</div></div>
 
   <div class="hud-bottom">
-    <div class="hint" id="hint" role="status" aria-live="polite"></div>
     <div class="controls">
       <button class="btn ghost small" id="quakeBtn">Earthquake!</button>
     </div>
