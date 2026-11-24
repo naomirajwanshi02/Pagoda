@@ -11,8 +11,8 @@
 
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { materials } from './look.js';
-import { PARTS } from './data.js';
+import { materials } from './look.js?v=20261124';
+import { PARTS } from './data.js?v=20261124';
 
 const TAU = Math.PI * 2, Q = Math.PI / 2;
 const V = (x, y, z) => new THREE.Vector3(x, y, z);

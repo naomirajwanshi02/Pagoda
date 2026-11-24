@@ -5,8 +5,8 @@
 // space to put it back, shake it. All words go in the one card at the top, so nothing
 // ever covers the pagoda.
 
-import { Stage } from './stage.js';
-import { PAGODA, PARTS, QUAKE } from './data.js';
+import { Stage } from './stage.js?v=20261124';
+import { PAGODA, PARTS, QUAKE } from './data.js?v=20261124';
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -167,7 +167,7 @@ $('quakeBtn').onclick = () => {
 $('infoClose').onclick = () => setInfo(false);
 $('infoBtn').onclick = () => setInfo($('namecard').hidden);
 // the cross above the i button: leave the pagoda and go back to scanning in Scan to Explore, the hub this is linked from
-const HUB = 'https://naomirajwanshi02.github.io/Scan_To_Explore/';
+const HUB = 'https://naomirajwanshi02.github.io/Scan_To_Explore/?scan=1';   // straight onto its scanning screen
 const toHub = () => { try { stage?.stop(); } catch { /* fine */ } location.href = HUB; };
 $('exitBtn').onclick = toHub;
 $('introExit').onclick = toHub;   // the intro card's cross does the same
