@@ -12,8 +12,8 @@
 // space to put it back together.
 
 import * as THREE from 'three';
-import { setupRenderer, environment, lights, fitShadow, roomLight, groundMeshes } from './look.js?v=20261124';
-import { buildPagoda, DIM } from './pagoda.js?v=20261124';
+import { setupRenderer, environment, lights, fitShadow, roomLight, groundMeshes } from './look.js?v=20261125';
+import { buildPagoda, DIM } from './pagoda.js?v=20261125';
 
 const params = new URLSearchParams(location.search);
 export const TARGET_SRC = params.get('target') || './targets.mind';
