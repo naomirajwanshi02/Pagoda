@@ -5,8 +5,8 @@
 // space to put it back, shake it. All words go in the one card at the top, so nothing
 // ever covers the pagoda.
 
-import { Stage } from './stage.js?v=20261125';
-import { PAGODA, PARTS, QUAKE } from './data.js?v=20261125';
+import { Stage } from './stage.js?v=20261125b';
+import { PAGODA, PARTS, QUAKE } from './data.js?v=20261125b';
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
